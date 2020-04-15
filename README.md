@@ -1,2 +1,1 @@
-# techblogsapp
- Technical Blogs Web Service
+# Technical Blogs Web Service
