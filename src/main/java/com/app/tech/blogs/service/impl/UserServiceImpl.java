@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.tech.blogs.common.dto.UserDTO;
 import com.app.tech.blogs.common.exception.BusinessException;
+import com.app.tech.blogs.common.util.IdUtils;
 import com.app.tech.blogs.io.entity.UserEntity;
 import com.app.tech.blogs.repository.UserRepository;
 import com.app.tech.blogs.service.UserService;
@@ -15,6 +16,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	IdUtils idUtils;
 
 	@Override
 	public UserDTO createUser(UserDTO userDTO) throws BusinessException {
@@ -24,11 +28,13 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		UserEntity userEntity = new UserEntity();
-		BeanUtils.copyProperties(userDTO, userEntity);
 		
-		// set fields that do not exist in UserDTO
+		if (userDTO != null) {
+		   BeanUtils.copyProperties(userDTO, userEntity);
+		}
+		
 		userEntity.setEncryptedPassword("test");
-		userEntity.setUserId("test_user_id");
+		userEntity.setUserId(idUtils.generateId(32));
 		
 		UserEntity savedUserEntity = userRepository.save(userEntity);
 		
