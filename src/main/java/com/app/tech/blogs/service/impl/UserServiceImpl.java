@@ -4,7 +4,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.app.tech.blogs.common.UserDTO;
+import com.app.tech.blogs.common.dto.UserDTO;
+import com.app.tech.blogs.common.exception.BusinessException;
 import com.app.tech.blogs.io.entity.UserEntity;
 import com.app.tech.blogs.repository.UserRepository;
 import com.app.tech.blogs.service.UserService;
@@ -16,7 +17,12 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 
 	@Override
-	public UserDTO createUser(UserDTO userDTO) {
+	public UserDTO createUser(UserDTO userDTO) throws BusinessException {
+		
+		if (userExists(userDTO)) {
+			throw new BusinessException("Record already exist!");
+		}
+		
 		UserEntity userEntity = new UserEntity();
 		BeanUtils.copyProperties(userDTO, userEntity);
 		
@@ -30,6 +36,10 @@ public class UserServiceImpl implements UserService {
 		BeanUtils.copyProperties(savedUserEntity, newUserDTO);
 		
 		return newUserDTO;
+	}
+	
+	private boolean userExists(UserDTO userDTO) {
+		return userDTO != null && (userRepository.findByEmail(userDTO.getEmail())) != null;
 	}
 
 }

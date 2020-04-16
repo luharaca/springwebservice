@@ -1,4 +1,4 @@
-package com.app.tech.blogs.common;
+package com.app.tech.blogs.common.dto;
 
 import java.io.Serializable;
 
