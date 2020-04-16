@@ -2,8 +2,9 @@ package com.app.tech.blogs.service;
 
 import com.app.tech.blogs.common.dto.UserDTO;
 import com.app.tech.blogs.common.exception.BusinessException;
+import com.app.tech.blogs.common.exception.InternalServerException;
 
 public interface UserService {
-	
-	UserDTO createUser(UserDTO userDTO) throws BusinessException;
+
+	UserDTO createUser(UserDTO userDTO) throws BusinessException, InternalServerException;
 }
