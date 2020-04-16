@@ -7,5 +7,6 @@ import com.app.tech.blogs.io.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends CrudRepository<UserEntity, Long>{
-	// TODO: more methods will be added
+	// The method name needs to follow naming convention "findBy + field name"
+	UserEntity findByEmail(String email);
 }

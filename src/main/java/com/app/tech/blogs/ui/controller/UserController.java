@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.tech.blogs.common.UserDTO;
+import com.app.tech.blogs.common.dto.UserDTO;
+import com.app.tech.blogs.common.exception.BusinessException;
 import com.app.tech.blogs.service.UserService;
 import com.app.tech.blogs.ui.model.request.UserRequest;
 import com.app.tech.blogs.ui.model.response.UserResponse;
@@ -27,7 +28,7 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public UserResponse createUser(@RequestBody UserRequest userInRequest) {
+	public UserResponse createUser(@RequestBody UserRequest userInRequest) throws BusinessException {
 		UserResponse userResponse = new UserResponse();
 		
 		UserDTO userDTO = new UserDTO();
