@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity(name="users")
+@Entity(name = "users")
 public class UserEntity implements Serializable {
 
 	private static final long serialVersionUID = 1186818254403121371L;
@@ -15,25 +15,25 @@ public class UserEntity implements Serializable {
 	@Id
 	@GeneratedValue
 	private long id;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String userId;
-	
-	@Column(nullable=false, length=50)
+
+	@Column(nullable = false, length = 50)
 	private String firstName;
-	
-	@Column(nullable=false, length=50)
+
+	@Column(nullable = false, length = 50)
 	private String lastName;
-	
-	@Column(nullable=false, length=120, unique=true)
+
+	@Column(nullable = false, length = 120, unique = true)
 	private String email;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String encryptedPassword;
-	
+
 	private String emailVerificationToken;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private Boolean emailVerified = false;
 
 	public long getId() {
@@ -99,5 +99,5 @@ public class UserEntity implements Serializable {
 	public void setEmailVerified(Boolean emailVerified) {
 		this.emailVerified = emailVerified;
 	}
-	
+
 }

@@ -11,7 +11,7 @@
 	<groupId>com.app.tech.blogs</groupId>
 	<artifactId>techblogsapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>techblogsapp</name>
+	<name>techblogsapp</name> 
 	<description>Technical Blogs Web Service</description>
 
 	<properties>
