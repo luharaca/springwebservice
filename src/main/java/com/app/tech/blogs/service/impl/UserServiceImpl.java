@@ -1,7 +1,12 @@
 package com.app.tech.blogs.service.impl;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +58,17 @@ public class UserServiceImpl implements UserService {
 
 	private boolean userExists(UserDTO userDTO) {
 		return (userRepository.findByEmail(userDTO.getEmail())) != null;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String email) {
+		UserEntity userEntity = userRepository.findByEmail(email);
+
+		if (userEntity != null) {
+			return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
+		}
+
+		throw new UsernameNotFoundException("The user registered with email " + email + " could not be found.");
 	}
 
 }
