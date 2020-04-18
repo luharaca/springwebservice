@@ -6,7 +6,7 @@ package com.app.tech.blogs.common.exception;
  * @author Haochuan
  *
  */
-public class BusinessException extends Exception {
+public class BusinessException extends RuntimeException {
 
 	private static final long serialVersionUID = -6469800069955282762L;
 
