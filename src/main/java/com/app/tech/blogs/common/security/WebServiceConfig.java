@@ -27,12 +27,17 @@ public class WebServiceConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
-				.permitAll().anyRequest().authenticated().and()
-				.addFilter(new AuthenticationFilter(this.authenticationManager()));
+				.permitAll().anyRequest().authenticated().and().addFilter(getAuthenticationFilter());
 	}
 
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userService).passwordEncoder(bcryptPasswordEncoder);
+	}
+
+	private AuthenticationFilter getAuthenticationFilter() throws Exception {
+		AuthenticationFilter authenticationFilter = new AuthenticationFilter(this.authenticationManager());
+		authenticationFilter.setFilterProcessesUrl("/users/login");
+		return authenticationFilter;
 	}
 }
