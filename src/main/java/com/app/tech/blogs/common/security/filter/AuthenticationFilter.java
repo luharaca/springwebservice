@@ -1,4 +1,4 @@
-package com.app.tech.blogs.common.security;
+package com.app.tech.blogs.common.security.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,7 +54,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			Authentication authResult) throws IOException, ServletException {
 		String username = ((User) authResult.getPrincipal()).getUsername();
 
-		response.addHeader(SecurityConstants.HEADER, SecurityConstants.TOKEN_PREFIX + generateJSONWebToken(username));
+		response.addHeader(SecurityConstants.AUTHORIZATION_HEADER,
+				SecurityConstants.TOKEN_PREFIX + generateJSONWebToken(username));
 
 		response.addHeader(SecurityConstants.USER_ID, getUserId(username));
 	}
