@@ -63,7 +63,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	private String generateJSONWebToken(String username) {
 		return Jwts.builder().setSubject(username)
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET).compact();
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret()).compact();
 	}
 
 	private String getUserId(String username) {
