@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.app.tech.blogs.common.dto.UserDTO;
 import com.app.tech.blogs.common.exception.BusinessException;
+import com.app.tech.blogs.common.exception.ExceptionMessage;
 import com.app.tech.blogs.common.exception.InternalServerException;
 import com.app.tech.blogs.common.util.IdUtils;
 import com.app.tech.blogs.io.entity.UserEntity;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
 
 		if (userDTO != null) {
 			if (userExists(userDTO)) {
-				throw new BusinessException("Record already exist!");
+				throw new BusinessException(ExceptionMessage.USER_ALREADY_EXISTS.getExceptionMessage());
 			}
 
 			UserEntity userEntity = new UserEntity();
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
 			return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
 		}
 
-		throw new UsernameNotFoundException("The user registered with email " + email + " could not be found.");
+		throw new UsernameNotFoundException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
 			return userDTO;
 		}
 
-		throw new BusinessException("User with userId " + userId + " could not be found");
+		throw new BusinessException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
 	}
 
 }
