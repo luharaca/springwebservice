@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	BCryptPasswordEncoder bcryptPasswordEncoder;
 
 	@Override
-	public UserDTO createUser(UserDTO userDTO) throws BusinessException, InternalServerException {
+	public UserDTO createUser(UserDTO userDTO) {
 
 		if (userDTO != null) {
 			if (userExists(userDTO)) {
@@ -69,6 +69,16 @@ public class UserServiceImpl implements UserService {
 		}
 
 		throw new UsernameNotFoundException("The user registered with email " + email + " could not be found.");
+	}
+
+	@Override
+	public UserDTO findUserByUsername(String username) {
+		UserDTO userDTO = new UserDTO();
+
+		UserEntity userEntity = userRepository.findByEmail(username);
+		BeanUtils.copyProperties(userEntity, userDTO);
+
+		return userDTO;
 	}
 
 }

@@ -10,7 +10,6 @@ class TechblogsappApplicationTests {
 
 	@Test
 	void contextLoads() {
-
 	}
 
 }
