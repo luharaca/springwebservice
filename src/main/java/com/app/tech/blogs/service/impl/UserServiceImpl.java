@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
-
+		userDTO = null;
 		if (userDTO != null) {
 			if (userExists(userDTO)) {
 				throw new BusinessException(ExceptionMessage.USER_ALREADY_EXISTS.getExceptionMessage());
