@@ -15,7 +15,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.app.tech.blogs.SpringApplicationContext;
+import com.app.tech.blogs.common.dto.UserDTO;
 import com.app.tech.blogs.common.exception.BusinessException;
+import com.app.tech.blogs.common.exception.InternalServerException;
+import com.app.tech.blogs.service.UserService;
 import com.app.tech.blogs.ui.model.request.LoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -48,13 +52,27 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
-
 		String username = ((User) authResult.getPrincipal()).getUsername();
 
-		String token = Jwts.builder().setSubject(username)
+		response.addHeader(SecurityConstants.HEADER, SecurityConstants.TOKEN_PREFIX + generateJSONWebToken(username));
+
+		response.addHeader(SecurityConstants.USER_ID, getUserId(username));
+	}
+
+	private String generateJSONWebToken(String username) {
+		return Jwts.builder().setSubject(username)
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
 				.signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET).compact();
+	}
 
-		response.addHeader(SecurityConstants.HEADER, SecurityConstants.TOKEN_PREFIX + token);
+	private String getUserId(String username) {
+		UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
+		UserDTO user = userService.findUserByUsername(username);
+
+		if (user != null) {
+			return user.getUserId();
+		}
+
+		throw new InternalServerException("User with username " + username + " cannot be found");
 	}
 }
