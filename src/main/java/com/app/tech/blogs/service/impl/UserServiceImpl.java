@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDTO createUser(UserDTO userDTO) {
-		userDTO = null;
+
 		if (userDTO != null) {
 			if (userExists(userDTO)) {
 				throw new BusinessException(ExceptionMessage.USER_ALREADY_EXISTS.getExceptionMessage());
@@ -97,4 +97,32 @@ public class UserServiceImpl implements UserService {
 		throw new BusinessException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
 	}
 
+	@Override
+	public UserDTO updateUser(String userId, UserDTO userToUpdate) {
+
+		UserEntity userEntity = userRepository.findByUserId(userId);
+
+		if (userEntity != null) {
+			setUpdateEntity(userToUpdate, userEntity);
+
+			UserEntity upatedUserEntity = userRepository.save(userEntity);
+
+			UserDTO updatedUserDTO = new UserDTO();
+			BeanUtils.copyProperties(upatedUserEntity, updatedUserDTO);
+			return updatedUserDTO;
+		}
+
+		throw new BusinessException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
+	}
+
+	private void setUpdateEntity(UserDTO userToUpdate, UserEntity existingEntity) {
+
+		if (userToUpdate.getFirstName() != null) {
+			existingEntity.setFirstName(userToUpdate.getFirstName());
+		}
+
+		if (userToUpdate.getLastName() != null) {
+			existingEntity.setLastName(userToUpdate.getLastName());
+		}
+	}
 }
