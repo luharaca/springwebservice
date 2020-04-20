@@ -1,5 +1,6 @@
 package com.app.tech.blogs.ui.controller;
 
+import org.hibernate.cfg.beanvalidation.GroupsPerOperation.Operation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.tech.blogs.common.dto.UserDTO;
 import com.app.tech.blogs.service.UserService;
 import com.app.tech.blogs.ui.model.request.UserRequest;
+import com.app.tech.blogs.ui.model.response.OperationResponse;
 import com.app.tech.blogs.ui.model.response.UserResponse;
+import com.app.tech.blogs.ui.model.response.operation.OperationalStatus;
 
 @RestController
 @RequestMapping("users")
@@ -60,8 +63,20 @@ public class UserController {
 		return userResponse;
 	}
 
-	@DeleteMapping
-	public String deleteUser() {
-		return "deleteUser() was called";
+	@DeleteMapping(path = "/{id}")
+	public OperationResponse deleteUser(@PathVariable String id) {
+
+		userService.deleteUserById(id);
+
+		return buildOperationResponse(Operation.DELETE.getName(), OperationalStatus.SUCCESS.getMessage());
+	}
+
+	private OperationResponse buildOperationResponse(String operation, String message) {
+		OperationResponse operationResponse = new OperationResponse();
+
+		operationResponse.setOperation(operation);
+		operationResponse.setOperationalStatus(message);
+
+		return operationResponse;
 	}
 }

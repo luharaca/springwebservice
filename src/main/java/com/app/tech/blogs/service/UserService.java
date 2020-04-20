@@ -13,4 +13,6 @@ public interface UserService extends UserDetailsService {
 	UserDTO findUserByUserId(String userId);
 
 	UserDTO updateUser(String userId, UserDTO userDTO);
+
+	void deleteUserById(String userId);
 }

@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 			return userDTO;
 		}
 
-		throw new BusinessException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
+		throw new UsernameNotFoundException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
 			return updatedUserDTO;
 		}
 
-		throw new BusinessException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
+		throw new UsernameNotFoundException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
 	}
 
 	private void setUpdateEntity(UserDTO userToUpdate, UserEntity existingEntity) {
@@ -125,4 +125,16 @@ public class UserServiceImpl implements UserService {
 			existingEntity.setLastName(userToUpdate.getLastName());
 		}
 	}
+
+	@Override
+	public void deleteUserById(String userId) {
+		UserEntity userEntity = userRepository.findByUserId(userId);
+
+		if (userEntity == null) {
+			throw new UsernameNotFoundException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
+		}
+
+		userRepository.delete(userEntity);
+	}
+
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -16,6 +17,11 @@ public class ExceptionMapper {
 	@ExceptionHandler(value = BusinessException.class)
 	public ResponseEntity<Object> handleBusinessException(BusinessException ex) {
 		return new ResponseEntity<>(buildErrorResponse(ex), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(value = UsernameNotFoundException.class)
+	public ResponseEntity<Object> handleNotFoundException(UsernameNotFoundException ex) {
+		return new ResponseEntity<>(buildErrorResponse(ex), new HttpHeaders(), HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(value = { InternalServerException.class, Exception.class })
