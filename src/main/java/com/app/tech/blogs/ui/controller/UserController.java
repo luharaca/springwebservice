@@ -1,5 +1,8 @@
 package com.app.tech.blogs.ui.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.cfg.beanvalidation.GroupsPerOperation.Operation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +37,21 @@ public class UserController {
 		BeanUtils.copyProperties(user, userResponse);
 
 		return userResponse;
+	}
+	
+	@GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+	public List<UserResponse> getUser() {
+		List<UserResponse> userResponseList = new ArrayList<>();
+
+		List<UserDTO> users = userService.findAllUsers();
+		
+		for (UserDTO userDTO: users) {
+			UserResponse userResponse = new UserResponse();
+			BeanUtils.copyProperties(userDTO, userResponse);
+			userResponseList.add(userResponse);
+		}
+
+		return userResponseList;
 	}
 
 	@PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {

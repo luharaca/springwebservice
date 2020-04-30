@@ -1,6 +1,7 @@
 package com.app.tech.blogs.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,6 +97,24 @@ public class UserServiceImpl implements UserService {
 
 		throw new UsernameNotFoundException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
 	}
+	
+	@Override
+	public List<UserDTO> findAllUsers() {
+		List<UserDTO> userDTOs = new ArrayList<>();
+		List<UserEntity> userEntities = (List<UserEntity>) userRepository.findAll();
+		
+		if (userEntities == null) {
+			throw new InternalServerException("The expected user list was not returned");
+		}
+		
+		for (UserEntity userEntity : userEntities) {
+			UserDTO userDTO = new UserDTO();
+			BeanUtils.copyProperties(userEntity, userDTO);
+			userDTOs.add(userDTO);
+		}
+		
+		return userDTOs;
+	}
 
 	@Override
 	public UserDTO updateUser(String userId, UserDTO userToUpdate) {
@@ -136,5 +155,7 @@ public class UserServiceImpl implements UserService {
 
 		userRepository.delete(userEntity);
 	}
+
+
 
 }
