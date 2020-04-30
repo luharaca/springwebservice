@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -97,15 +100,15 @@ public class UserServiceImpl implements UserService {
 
 		throw new UsernameNotFoundException(ExceptionMessage.USER_NOT_FOUND.getExceptionMessage());
 	}
+
 	
 	@Override
-	public List<UserDTO> findAllUsers() {
+	public List<UserDTO> findUsersByPage(int page, int limit) {
 		List<UserDTO> userDTOs = new ArrayList<>();
-		List<UserEntity> userEntities = (List<UserEntity>) userRepository.findAll();
 		
-		if (userEntities == null) {
-			throw new InternalServerException("The expected user list was not returned");
-		}
+		Page<UserEntity> userEntityPage = userRepository.findAll(PageRequest.of(page - 1,limit ));
+		
+		List<UserEntity> userEntities = userEntityPage.getContent();
 		
 		for (UserEntity userEntity : userEntities) {
 			UserDTO userDTO = new UserDTO();
@@ -155,7 +158,6 @@ public class UserServiceImpl implements UserService {
 
 		userRepository.delete(userEntity);
 	}
-
 
 
 }
