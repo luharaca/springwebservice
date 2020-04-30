@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.tech.blogs.common.dto.UserDTO;
@@ -39,11 +40,12 @@ public class UserController {
 		return userResponse;
 	}
 	
+	
 	@GetMapping(produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
-	public List<UserResponse> getUser() {
+	public List<UserResponse> getUsers(@RequestParam(defaultValue="1", required=false) int page, @RequestParam(defaultValue="10000",required=false) int limit) {
 		List<UserResponse> userResponseList = new ArrayList<>();
 
-		List<UserDTO> users = userService.findAllUsers();
+		List<UserDTO> users = userService.findUsersByPage(page,limit);
 		
 		for (UserDTO userDTO: users) {
 			UserResponse userResponse = new UserResponse();
