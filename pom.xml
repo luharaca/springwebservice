@@ -13,6 +13,7 @@
 	<artifactId>techblogsapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>techblogsapp</name>
+	<packaging>war</packaging>
 	<description>Technical Blogs Web Service</description>
 
 	<properties>
@@ -52,6 +53,13 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
+		</dependency>
+		
+		<!-- provide tomcat at runitme instead of compile time -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
